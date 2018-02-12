@@ -1,0 +1,305 @@
+{
+  "HDFS": {
+    "core-site": {
+      "hadoop.ssl.require.client.cert": "false",
+      "hadoop.ssl.hostname.verifier": "DEFAULT",
+      "hadoop.ssl.keystores.factory.class": "org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory",
+      "hadoop.ssl.server.conf": "ssl-server.xml",
+      "hadoop.ssl.client.conf": "ssl-client.xml"
+    },
+    "ssl-server": {
+      "ssl.server.truststore.location": "TRUSTSTORELOC",
+      "ssl.server.truststore.password": "TRUSTSTOREPASS",
+      "ssl.server.truststore.type": "jks",
+      "ssl.server.keystore.location": "KEYSTORELOC",
+      "ssl.server.keystore.password": "KEYPASS",
+      "ssl.server.keystore.keypassword": "KEYPASS",
+      "ssl.server.keystore.type": "jks"
+    },
+    "ssl-client": {
+      "ssl.server.truststore.location": "TRUSTSTORELOC",
+      "ssl.server.truststore.password": "TRUSTSTOREPASS",
+      "ssl.server.truststore.type": "jks"
+    },
+    "hdfs-site": {
+      "dfs.http.policy": "HTTPS_ONLY",
+      "dfs.client.https.need-auth": "false",
+      "dfs.https.enable": "true"
+    },
+    "ranger-hdfs-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-hdfs-plugin-properties": {
+      "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "YARN": {
+    "yarn-site": {
+      "yarn.http.policy": "HTTPS_ONLY"
+    },
+    "ranger-yarn-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-yarn-plugin-properties": {
+      "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "MAPREDUCE2": {
+    "mapred-site": {
+      "mapreduce.jobhistory.http.policy": "HTTPS_ONLY"
+    }
+  },
+  "SPARK2": {
+    "spark2-defaults": {
+      "spark.ssl.enabled": "true",
+      "spark.ssl.enabledAlgorithms": "TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA",
+      "spark.ssl.keyPassword": "KEYPASS",
+      "spark.ssl.keyStore": "KEYSTORELOC",
+      "spark.ssl.keyStorePassword": "KEYPASS",
+      "spark.ssl.protocol": "TLS",
+      "spark.ssl.trustStore": "TRUSTSTORELOC",
+      "spark.ssl.trustStorePassword": "trustStorePassword",
+      "spark.ui.https.enabled": "true"
+    }
+  },
+  "SPARK": {
+    "spark-defaults": {
+      "spark.ssl.enabled": "true",
+      "spark.ssl.enabledAlgorithms": "TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA",
+      "spark.ssl.keyPassword": "KEYPASS",
+      "spark.ssl.keyStore": "KEYSTORELOC",
+      "spark.ssl.keyStorePassword": "KEYPASS",
+      "spark.ssl.protocol": "TLS",
+      "spark.ssl.trustStore": "TRUSTSTORELOC",
+      "spark.ssl.trustStorePassword": "trustStorePassword"
+    }
+  },
+  "KAFKA": {
+    "kafka-broker": {
+      "ssl.keystore.location": "KEYSTORELOC",
+      "ssl.keystore.password": "KEYPASS",
+      "ssl.key.password": "KEYPASS",
+      "ssl.truststore.location": "TRUSTSTORELOC",
+      "ssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-kafka-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-kafka-plugin-properties": {
+      "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "NIFI": {
+    "nifi-ambari-ssl-config": {
+      "nifi.node.ssl.isenabled": "true",
+      "nifi.security.keystore": "KEYSTORELOC",
+      "nifi.security.keystorePasswd": "KEYPASS",
+      "nifi.security.keyPasswd": "KEYPASS",
+      "nifi.security.keystoreType": "jks",
+      "nifi.security.needClientAuth": "true",
+      "nifi.security.truststore": "TRUSTSTORELOC",
+      "nifi.security.truststorePasswd": "TRUSTSTOREPASS",
+      "nifi.security.truststoreType": "jks"
+    },
+    "ranger-nifi-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "nifi-properties": {
+      "nifi.security.identity.mapping.pattern.dn": "^[Cc][Nn]=(.*?),(.*?)$",
+      "nifi.security.identity.mapping.value.dn": "$1"
+    },
+    "ranger-nifi-plugin-properties": {
+      "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "STORM": {
+    "storm-site": {
+      "ui.https.keystore.path": "KEYSTORELOC",
+      "ui.https.key.password": "KEYPASS",
+      "ui.https.keystore.password": "KEYPASS",
+      "ui.https.keystore.type": "jks",
+      "ui.https.port": "8740"
+    },
+    "ranger-storm-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-storm-plugin-properties": {
+      "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "RANGER_KMS": {
+    "ranger-kms-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-kms-site": {
+      "ranger.service.https.attrib.keystore.file": "KEYSTORELOC",
+      "ranger.service.https.attrib.client.auth": "want",
+      "ranger.service.https.attrib.keystore.keyalias": "gateway-identity",
+      "ranger.service.https.attrib.keystore.pass": "KEYPASS",
+      "ranger.service.https.attrib.ssl.enabled": "true",
+      "ranger.truststore.file": "TRUSTSTORELOC",
+      "ranger.truststore.password": "TRUSTSTOREPASS"
+    }
+  },
+  "HBASE": {
+    "hbase-site": {
+      "hbase.ssl.enabled": "true",
+      "hbase.http.policy": "HTTPS_ONLY ",
+      "hadoop.ssl.enabled": "true"
+    },
+    "ranger-hbase-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-hbase-plugin-properties": {
+      "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "HIVE": {
+    "hive-interactive-site": {
+      "hive.server2.webui.use.ssl": "true",
+      "hive.server2.webui.keystore.path": "KEYSTORELOC",
+      "hive.server2.webui.keystore.password": "KEYPASS"
+    },
+    "ranger-hive-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-hive-plugin-properties": {
+      "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "AMBARI_INFRA": {
+    "infra_solr_env": {
+      "infra_solr_ssl_enabled": "true",
+      "infra_solr_truststore_location": "TRUSTSTORELOC",
+      "infra_solr_truststore_type": "jks",
+      "infra_solr_truststore_password": "TRUSTSTOREPASS",
+      "infra_solr_keystore_location": "KEYSTORELOC",
+      "infra_solr_keystore_type": "jks",
+      "infra_solr_keystre_password": "KEYPASS"
+    }
+  },
+  "AMBARI_METRICS": {
+    "ams-ssl-server": {
+      "ssl.client.truststore.location": "TRUSTSTORELOC",
+      "ssl.client.truststore.password": "TRUSTSTOREPASS",
+      "ssl.client.truststore.type": "jks",
+      "ssl.client.keystore.location": "KEYSTORELOC",
+      "ssl.client.keystore.password": "KEYPASS"
+    },
+    "ams-ssl-client": {
+      "ssl.client.truststore.location": "TRUSTSTORELOC",
+      "ssl.client.truststore.password": "TRUSTSTOREPASS",
+      "ssl.client.truststore.type": "jks"
+    }
+  },
+  "ATLAS": {
+    "application-properties": {
+      "truststore.file": "TRUSTSTORELOC",
+      "keystore.file": "KEYSTORELOC",
+      "client.auth.enabled": "false",
+      "cert.stores.credential.provider.path": "jceks://file//home/atlas/test.jceks",
+      "atlas.enableTLS": "true"
+    },
+    "ranger-atlas-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-atlas-plugin-properties": {
+      "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "OOZIE": {
+    "oozie-env": {
+      "content": "\n#!/bin/bash\n\nif [ -d \"/usr/lib/bigtop-tomcat\" ]; then\n  export OOZIE_CONFIG=${OOZIE_CONFIG:-{{conf_dir}}}\n  export CATALINA_BASE=${CATALINA_BASE:-{{oozie_server_dir}}}\n  export CATALINA_TMPDIR=${CATALINA_TMPDIR:-/var/tmp/oozie}\n  export OOZIE_CATALINA_HOME=/usr/lib/bigtop-tomcat\nfi\n\n#Set JAVA HOME\nexport JAVA_HOME={{java_home}}\n\nexport JRE_HOME=${JAVA_HOME}\n\n# Set Oozie specific environment variables here.\n\n# Settings for the Embedded Tomcat that runs Oozie\n# Java System properties for Oozie should be specified in this variable\n#\n{% if java_version < 8 %}\nexport CATALINA_OPTS=\"$CATALINA_OPTS -Xmx{{oozie_heapsize}} -XX:MaxPermSize={{oozie_permsize}}\"\n{% else %}\nexport CATALINA_OPTS=\"$CATALINA_OPTS -Xmx{{oozie_heapsize}} -Dsun.security.krb5.rcache=none\"\n{% endif %}\n# Oozie configuration file to load from Oozie configuration directory\n#\n# export OOZIE_CONFIG_FILE=oozie-site.xml\n\n# Oozie logs directory\n#\nexport OOZIE_LOG={{oozie_log_dir}}\n\n# Oozie pid directory\n#\nexport CATALINA_PID={{pid_file}}\n\n#Location of the data for oozie\nexport OOZIE_DATA={{oozie_data_dir}}\n\n# Oozie Log4J configuration file to load from Oozie configuration directory\n#\n# export OOZIE_LOG4J_FILE=oozie-log4j.properties\n\n# Reload interval of the Log4J configuration file, in seconds\n#\n# export OOZIE_LOG4J_RELOAD=10\n\n# The port Oozie server runs\n#\nexport OOZIE_HTTP_PORT=11000\nexport OOZIE_HTTPS_PORT=11443\nexport OOZIE_HTTPS_KEYSTORE_FILE=KEYSTORELOC\nexport OOZIE_HTTPS_KEYSTORE_PASS=\"KEYPASS\"\n\n\n# The admin port Oozie server runs\n#\nexport OOZIE_ADMIN_PORT={{oozie_server_admin_port}}\n\n# The host name Oozie server runs on\n#\nexport OOZIE_HTTP_HOSTNAME=`hostname -f`\n\n# The base URL for callback URLs to Oozie\n#\n# export OOZIE_BASE_URL=\"https://${OOZIE_HTTP_HOSTNAME}:${OOZIE_HTTP_PORT}/oozie\"\nexport JAVA_LIBRARY_PATH={{hadoop_lib_home}}/native/Linux-{{architecture}}-64\n\n# At least 1 minute of retry time to account for server downtime during\n# upgrade/downgrade\nexport OOZIE_CLIENT_OPTS=\"${OOZIE_CLIENT_OPTS} -Doozie.connection.retry.count=5 \"\n\n{% if sqla_db_used or lib_dir_available %}\nexport LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH:{{jdbc_libs_dir}}\"\nexport JAVA_LIBRARY_PATH=\"$JAVA_LIBRARY_PATH:{{jdbc_libs_dir}}\"\n{% endif %}"
+    },
+    "oozie-site": {
+      "oozie.base.url": "https://{{oozie_server_host}}:11443"
+    }
+  },
+  "ZEPPELIN": {
+    "zeppelin-config": {
+      "zeppelin.ssl": "true",
+      "zeppelin.ssl.key.manager.password": "KEYPASS",
+      "zeppelin.ssl.keystore.password": "KEYPASS",
+      "zeppelin.ssl.keystore.path": "KEYSTORELOC",
+      "zeppelin.ssl.keystore.type": "jks",
+      "zeppelin.ssl.truststore.type": "jks",
+      "zeppelin.ssl.truststore.path": "TRUSTSTORELOC",
+      "zeppelin.ssl.truststore.password": "TRUSTSTOREPASS"
+    }
+  },
+  "LOGSEARCH": {
+    "logsearch-env": {
+      "logsearch_ui_protocol": "https",
+      "logsearch_truststore_location": "TRUSTSTORELOC",
+      "logsearch_truststore_type": "jks",
+      "logsearch_truststore_password": "TRUSTSTOREPASS",
+      "logsearch_keystore_location": "KEYSTORELOC",
+      "logsearch_keystore_type": "jks",
+      "logsearch_keystore_password": "KEYPASS"
+    },
+    "logfeeder-env": {
+      "logfeeder_truststore_location": "TRUSTSTORELOC",
+      "logfeeder_truststore_type": "jks",
+      "logfeeder_truststore_password": "TRUSTSTOREPASS",
+      "logfeeder_keystore_location": "KEYSTORELOC",
+      "logfeeder_keystore_type": "jks",
+      "logfeeder_keystore_password": "KEYPASS"
+    }
+  },
+  "RANGER": {
+    "ranger-admin-site": {
+      "ranger.https.attrib.keystore.file": "KEYSTORELOC",
+      "ranger.service.https.attrib.keystore.keyalias": "gateway-identity",
+      "ranger.service.https.attrib.keystore.pass": "KEYPASS",
+      "ranger.service.https.attrib.ssl.enabled": "true",
+      "ranger.service.https.port": "6182",
+      "ranger.truststore.file": "TRUSTSTORELOC",
+      "ranger.truststore.password": "TRUSTSTOREPASS"
+    },
+    "atlas-tagsync-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-tagsync-policymgr-ssl": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-ugsync-site": {
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
+      "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    }
+  }
+}
