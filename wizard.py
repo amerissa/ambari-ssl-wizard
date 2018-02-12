@@ -4,17 +4,11 @@ import requests
 import json
 import sys
 import optparse
+import ConfigParser
 from optparse import OptionGroup
 import os
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-
-changeprops = {
-"KEYSTORELOC" : "/etc/amerstore",
-"KEYPASS" : "amerkeypass",
-"TRUSTSTORELOC" : "/etc/amertruststore",
-"TRUSTSTOREPASS" : "amertruststore"
-}
 
 
 class propertiesupdater(object):
@@ -37,14 +31,12 @@ class ambariProps(object):
         self.command = '/var/lib/ambari-server/resources/scripts/configs.py -t %s -l %s -n %s -s %s -u %s -p %s ' % (password, port, host, username, protocol, clustername)
     def get(self, config, property):
         command = '%s -c %s -a %s %s' % (self.command, config, 'get')
-        #rint(command)
-        #result = os.system(command)
-        return(command)
+        result = os.system(command)
+        return(result)
     def set(self, config, property, value):
         command = "%s -c %s -a %s %s '%s'" % (self.command, config, 'set', property, value)
-        #print(command)
-        #result = os.system(command)
-        return(command)
+        result = os.system(command)
+        return(result)
 
 def ambariREST(protocol, host, port, username, password, endpoint):
     url = protocol + "://" + host + ":" + port + "/" + endpoint
@@ -71,6 +63,7 @@ def main():
     parser.add_option("-u", "--username", dest="username", default="admin", help="Ambari Username" )
     parser.add_option("-p", "--password", dest="password", default="admin", help="Ambari Password" )
     parser.add_option("-H", "--host", dest="host", default="localhost", help="Ambari Host" )
+    parser.add_option("-C", "--configfile", dest="configs", default="./configs", help="Config file containing key and truststore information" )
 
     (options, args) = parser.parse_args()
     global username
@@ -84,12 +77,19 @@ def main():
     port = options.port
     protocol = options.protocol
     host = options.host
-    #clustername = ambariREST(protocol, host, port, username, password, "api/v1/clusters")["items"][0]["Clusters"]["cluster_name"]
-    clustername = "amer"
-    #installedservices = [ line["ServiceInfo"]["service_name"] for line in ambariREST(protocol, host, port, username, password, "api/v1/clusters/" + clustername + "/services" )["items"]]
-    installedservices = ["ATLAS"]
+    clustername = ambariREST(protocol, host, port, username, password, "api/v1/clusters")["items"][0]["Clusters"]["cluster_name"]
+    installedservices = [ line["ServiceInfo"]["service_name"] for line in ambariREST(protocol, host, port, username, password, "api/v1/clusters/" + clustername + "/services" )["items"]]
     definitions = loaddefinitions()
     updater = propertiesupdater(definitions)
+    Config = ConfigParser.ConfigParser()
+    Config.read(options.configs)
+    global changeprops
+    changeprops = {
+    "KEYSTORELOC" : Config.get("Configs", "KeyStoreLocation"),
+    "KEYPASS" : Config.get("Configs", "KeyStorePassword"),
+    "TRUSTSTORELOC" : Config.get("Configs", "TrustStoreLocation"),
+    "TRUSTSTOREPASS" : Config.get("Configs", "TrustStorePassword")
+    }
     for service in installedservices:
         if service in definitions.keys():
             updater.service(service)

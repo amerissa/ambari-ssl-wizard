@@ -1,0 +1,12 @@
+#Sample Config File
+[Configs]
+HostFile=./hosts
+OrgUnit=Engineering
+Organization=AmerInc
+City=Toronto
+State=Ontario
+CountryCode=CA
+KeyStoreLocation=/etc/security/pki
+KeyStorePassword=AmerAmer
+TrustStoreLocation=/etc/security/pki
+TrustStorePassword=AmerAmer
