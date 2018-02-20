@@ -10,3 +10,4 @@ KeyStoreLocation=/etc/security/pki
 KeyStorePassword=AmerAmer
 TrustStoreLocation=/etc/security/pki
 TrustStorePassword=AmerAmer
+Domain=localdomain

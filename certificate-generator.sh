@@ -2,6 +2,7 @@
 
 function generatekeys {
   for host in $hosts; do
+    echo $host
     shost=`echo $host | cut -d . -f 1`
     keytool -genkey -noprompt -alias gateway-identity -keyalg RSA -dname "CN=$host, OU=$OU, O=$O, L=$L, S=$S, C=$C" -keystore $shost.jks -storepass "$KEYPASS"  -keypass "$KEYPASS"
   done
@@ -9,6 +10,7 @@ function generatekeys {
 
 function generatecsr {
   for host in $hosts; do
+    echo $host
     shost=`echo $host | cut -d . -f 1`
     keytool -certreq -noprompt -alias gateway-identity -keyalg RSA -keystore $shost.jks -storepass "$KEYPASS"  -keypass "$KEYPASS" > $shost.csr
   done
@@ -27,6 +29,7 @@ function importcert {
 
 function signcsrs {
   for host in $hosts; do
+    echo $host
     shost=`echo $host |cut -d . -f 1`
     openssl x509 -req -in $shost.csr -CA $domain.cer -CAkey $domain.key -CAcreateserial -out $shost.cer -days 1024 -sha256
   done
@@ -48,25 +51,28 @@ function generatetruststore {
 
 function generatepems {
   for host in $hosts; do
+    echo $host
     shost=`echo $host | cut -d . -f 1`
     keytool -importkeystore -srckeystore $shost.jks \
       -srcstorepass "$KEYPASS" -srckeypass "$KEYPASS" -destkeystore $shost.p12 \
       -deststoretype PKCS12 -srcalias gateway-identity -deststorepass "$KEYPASS" -destkeypass "$KEYPASS"
-    openssl pkcs12 -in $shost.p12 -passin pass:"$KEYPASS"  -nokeys $shost.pem
-    openssl rsa -in $shost.p12 -passin pass:"$KEYPASS" -nocerts -out $host.pem
-    rm -f $shost.p12
+    openssl pkcs12 -in $shost.p12 -passin pass:$KEYPASS  -nokeys -out $shost.pem
+    openssl pkcs12 -in $shost.p12 -passin pass:$KEYPASS -nocerts -out $shost.key
+    #rm -f $shost.p12
   done
 }
 
 function pushkeys {
   for host in $hosts; do
-    shost=`echo $host | cut -d . -f 1`
-    ssh $host mkdir -p $KEYLOC\; chmod ugo+rx $KEYLOC
-    ssh $host mkdir -p $TRUSTLOC\; chmod ugo+rx $TRUSTLOC
-    rsync -arP $shost.jks $host:${KEYLOC}/server.jks
-    rsync -arP truststore.jks $host:${TRUSTLOC}/truststore.jks
-    rsync -arP $shost.pem $host:${KEYLOC}/server.pem
-    rsync -arP $shost.key $host:${KEYLOC}/server.key
+    if [ $host != "ranger.$domain" ]; then
+      ssh $host mkdir -p $KEYLOC\; chmod ugo+rx $KEYLOC
+      ssh $host mkdir -p $TRUSTLOC\; chmod ugo+rx $TRUSTLOC
+      rsync -arP $shost.jks $host:${KEYLOC}/server.jks
+      rsync -arP truststore.jks $host:${TRUSTLOC}/truststore.jks
+      rsync -arP $shost.cer $host:${KEYLOC}/server.pem
+      rsync -arP $shost.key $host:${KEYLOC}/server.key
+      rsync -arP ranger.jks $host:${KEYLOC}/ranger-plugin.jks
+    fi
   done
 }
 
@@ -143,7 +149,12 @@ if [ -z $TRUSTLOC ]; then
   exit 1
 fi
 
-domain=`tail -n 1 $hostsfile | cut -d . -f 2-`
+domain=`cat $config | grep Domain | cut -d "=" -f 2`
+if [ -z $domain ]; then
+  echo Domain is not specified
+  exit 1
+fi
+
 echo ranger.$domain >> $hostsfile
 hosts=`cat $hostsfile`
 
@@ -157,7 +168,8 @@ case $1 in
     signcsrs
     generatetruststore
     importcert
-  #  pushkeys
+    generatepems
+    pushkeys
     ;;
   RemoteAuthorityGenerateCSR)
     generatekeys
@@ -166,6 +178,7 @@ case $1 in
   RemoteAuthorityImportCertsAndPush)
     importcert
     generatetruststore
+    generatepems
     pushkeys
     ;;
   *)

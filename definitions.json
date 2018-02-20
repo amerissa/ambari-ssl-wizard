@@ -27,10 +27,13 @@
       "dfs.https.enable": "true"
     },
     "ranger-hdfs-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-hdfs-security": {
+      "ranger.plugin.hdfs.policy.rest.url": "RANGERURL"
     },
     "ranger-hdfs-plugin-properties": {
       "common.name.for.certificate": "RANGERCOMMONNAME"
@@ -38,13 +41,19 @@
   },
   "YARN": {
     "yarn-site": {
-      "yarn.http.policy": "HTTPS_ONLY"
+      "yarn.http.policy": "HTTPS_ONLY",
+      "yarn.timeline-service.webapp.https.address": "TIMELINEURL",
+      "yarn.log.server.url": "HISTORYURL/jobhistory/logs",
+      "yarn.nodemanager.webapp.https.address": "0.0.0.0:8042"
     },
     "ranger-yarn-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-yarn-security": {
+      "ranger.plugin.yarn.policy.rest.url": "RANGERURL"
     },
     "ranger-yarn-plugin-properties": {
       "common.name.for.certificate": "RANGERCOMMONNAME"
@@ -52,7 +61,8 @@
   },
   "MAPREDUCE2": {
     "mapred-site": {
-      "mapreduce.jobhistory.http.policy": "HTTPS_ONLY"
+      "mapreduce.jobhistory.http.policy": "HTTPS_ONLY",
+      "mapreduce.jobhistory.webapp.https.address": "HISTORYURL"
     }
   },
   "SPARK2": {
@@ -88,8 +98,11 @@
       "ssl.truststore.location": "TRUSTSTORELOC",
       "ssl.truststore.password": "TRUSTSTOREPASS"
     },
+    "ranger-kafka-security": {
+      "ranger.plugin.kafka.policy.rest.url": "RANGERURL"
+    },
     "ranger-kafka-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
@@ -111,10 +124,13 @@
       "nifi.security.truststoreType": "jks"
     },
     "ranger-nifi-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-nifi-security": {
+      "ranger.plugin.nifi.policy.rest.url": "RANGERURL"
     },
     "nifi-properties": {
       "nifi.security.identity.mapping.pattern.dn": "^[Cc][Nn]=(.*?),(.*?)$",
@@ -132,8 +148,11 @@
       "ui.https.keystore.type": "jks",
       "ui.https.port": "8740"
     },
+    "ranger-storm-security": {
+      "ranger.plugin.storm.policy.rest.url": "RANGERURL"
+    },
     "ranger-storm-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
@@ -142,12 +161,30 @@
       "common.name.for.certificate": "RANGERCOMMONNAME"
     }
   },
+  "NIFI-REGISTRY": {
+    "nifi-registry-ambari-ssl-config": {
+      "nifi.registry.security.keystore": "KEYSTORELOC",
+      "nifi.security.keystorePasswd": "KEYPASS",
+      "nifi.security.keyPasswd": "KEYPASS",
+      "nifi.security.truststorePasswd": "TRUSTSTOREPASS",
+      "nifi.registry.security.needClientAuth": "false",
+      "nifi.registry.security.truststore": "TRUSTSTORELOC",
+      "nifi.registry.security.keystoreType": "jks",
+      "nifi.registry.security.truststoreType": "jks",
+      "nifi.toolkit.tls.regenerate": "false",
+      "nifi.registry.ssl.isenabled": "true"
+    }
+  },
   "RANGER_KMS": {
     "ranger-kms-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
+      "ranger.service.http.enabled": "false",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-kms-security": {
+      "ranger.plugin.kms.policy.rest.url": "RANGERURL"
     },
     "ranger-kms-site": {
       "ranger.service.https.attrib.keystore.file": "KEYSTORELOC",
@@ -166,10 +203,13 @@
       "hadoop.ssl.enabled": "true"
     },
     "ranger-hbase-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
+    },
+    "ranger-hbase-security": {
+      "ranger.plugin.hbase.policy.rest.url": "RANGERURL"
     },
     "ranger-hbase-plugin-properties": {
       "common.name.for.certificate": "RANGERCOMMONNAME"
@@ -182,13 +222,16 @@
       "hive.server2.webui.keystore.password": "KEYPASS"
     },
     "ranger-hive-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
     },
     "ranger-hive-plugin-properties": {
       "common.name.for.certificate": "RANGERCOMMONNAME"
+    },
+    "ranger-hive-security": {
+      "ranger.plugin.hive.policy.rest.url": "RANGERURL"
     }
   },
   "AMBARI_INFRA": {
@@ -224,8 +267,11 @@
       "cert.stores.credential.provider.path": "jceks://file//home/atlas/test.jceks",
       "atlas.enableTLS": "true"
     },
+    "ranger-atlas-security": {
+      "ranger.plugin.atlas.policy.rest.url": "RANGERURL"
+    },
     "ranger-atlas-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
@@ -274,29 +320,33 @@
     }
   },
   "RANGER": {
+    "admin-properties": {
+      "policymgr_external_url": "RANGERURL"
+    },
     "ranger-admin-site": {
       "ranger.https.attrib.keystore.file": "KEYSTORELOC",
       "ranger.service.https.attrib.keystore.keyalias": "gateway-identity",
       "ranger.service.https.attrib.keystore.pass": "KEYPASS",
       "ranger.service.https.attrib.ssl.enabled": "true",
       "ranger.service.https.port": "6182",
+      "ranger.service.http.enabled": "false",
       "ranger.truststore.file": "TRUSTSTORELOC",
       "ranger.truststore.password": "TRUSTSTOREPASS"
     },
     "atlas-tagsync-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
     },
     "ranger-tagsync-policymgr-ssl": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
     },
     "ranger-ugsync-site": {
-      "xasecure.policymgr.clientssl.keystore": "KEYSTORELOC",
+      "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
