@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python27
 
 import requests
 import json
@@ -31,17 +31,18 @@ class ambariProps(object):
     def __init__(self, protocol, host, port, username, password, clustername):
         self.command = '/var/lib/ambari-server/resources/scripts/configs.py -p %s -t %s -l %s -u %s -s %s -n %s ' % (password, port, host, username, protocol, clustername)
     def get(self, config, property):
-        command = '%s -c %s -a %s %s' % (self.command, config, 'get')
-        props = json.loads(os.system(command))
+        command = '%s -c %s -a %s' % (self.command, config, 'get')
+        data = os.popen(command + '| grep -v "###"').read()
+        props = json.loads(data)
         result = props["properties"][property]
         return(result)
     def set(self, config, property, value):
         command = "%s -c %s -a %s -k %s -v '%s'" % (self.command, config, 'set', property, value)
-        result = os.system(command)
+        result = os.popen(command).read()
         return(result)
 
 def ambariREST(protocol, host, port, username, password, endpoint):
-    url = protocol + "://" + host + ":" + port + "/" + endpoint
+    url = protocol + "://" + host + ":" + str(port) + "/" + endpoint
     try:
         r = requests.get(url, auth=(username, password), verify=False)
     except:
@@ -59,7 +60,7 @@ def loaddefinitions():
 
 def replaceurl(url, port):
     parsed = urlparse(url)
-    newurl = 'https://' + parsed.hostname + port
+    newurl = 'https://' + parsed.hostname + ':' + str(port)
     return(newurl)
 
 
@@ -100,8 +101,10 @@ def main():
     "TRUSTSTOREPASS" : Config.get("Configs", "TrustStorePassword"),
     "RANGERCOMMONNAME" : 'ranger.' + Config.get("Configs", "Domain"),
     "RANGERURL" : replaceurl(ambari.get("admin-properties", "policymgr_external_url"), 6182),
-    "TIMELINEURL" : replaceurl(ambari.get("yarn-site", "yarn.timeline-service.webapp.http.address"), 8190),
-    "HISTORYURL" : replaceurl(ambari.get("mapred-site", "mapreduce.jobhistory.webapp.address"), 19889),
+    "TIMELINEURL" : ambari.get("yarn-site", "yarn.timeline-service.webapp.address").split(':')[0] + ':8190',
+    "HISTORYURL" : replaceurl('http://' + ambari.get("mapred-site", "mapreduce.jobhistory.webapp.address"), 19889),
+    "KMSURL" : str(ambari.get("core-site", "hadoop.security.key.provider.path").replace(':9292', ':9393')).replace('//http@' , '//https@'),
+    "ATLASURL" : replaceurl("application-properties", "atlasatlas.rest.address" ), 21443)
     }
     for service in installedservices:
         if service in definitions.keys():

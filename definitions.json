@@ -5,7 +5,8 @@
       "hadoop.ssl.hostname.verifier": "DEFAULT",
       "hadoop.ssl.keystores.factory.class": "org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory",
       "hadoop.ssl.server.conf": "ssl-server.xml",
-      "hadoop.ssl.client.conf": "ssl-client.xml"
+      "hadoop.ssl.client.conf": "ssl-client.xml",
+      "hadoop.security.key.provider.path" : "KMSURL"
     },
     "ssl-server": {
       "ssl.server.truststore.location": "TRUSTSTORELOC",
@@ -17,14 +18,19 @@
       "ssl.server.keystore.type": "jks"
     },
     "ssl-client": {
-      "ssl.server.truststore.location": "TRUSTSTORELOC",
-      "ssl.server.truststore.password": "TRUSTSTOREPASS",
-      "ssl.server.truststore.type": "jks"
+      "ssl.client.truststore.location": "TRUSTSTORELOC",
+      "ssl.client.truststore.password": "TRUSTSTOREPASS",
+      "ssl.client.truststore.type": "jks",
+      "ssl.server.keystore.location": "KEYSTORELOC",
+      "ssl.server.keystore.password": "KEYPASS",
+      "ssl.server.keystore.keypassword": "KEYPASS",
+      "ssl.server.keystore.type": "jks"
     },
     "hdfs-site": {
       "dfs.http.policy": "HTTPS_ONLY",
       "dfs.client.https.need-auth": "false",
-      "dfs.https.enable": "true"
+      "dfs.https.enable": "true",
+      "dfs.encryption.key.provider.uri" : "KMSURL"
     },
     "ranger-hdfs-policymgr-ssl": {
       "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
@@ -74,7 +80,7 @@
       "spark.ssl.keyStorePassword": "KEYPASS",
       "spark.ssl.protocol": "TLS",
       "spark.ssl.trustStore": "TRUSTSTORELOC",
-      "spark.ssl.trustStorePassword": "trustStorePassword",
+      "spark.ssl.trustStorePassword": "TRUSTSTOREPASS",
       "spark.ui.https.enabled": "true"
     }
   },
@@ -87,7 +93,7 @@
       "spark.ssl.keyStorePassword": "KEYPASS",
       "spark.ssl.protocol": "TLS",
       "spark.ssl.trustStore": "TRUSTSTORELOC",
-      "spark.ssl.trustStorePassword": "trustStorePassword"
+      "spark.ssl.trustStorePassword": "TRUSTSTOREPASS"
     }
   },
   "KAFKA": {
@@ -247,11 +253,11 @@
   },
   "AMBARI_METRICS": {
     "ams-ssl-server": {
-      "ssl.client.truststore.location": "TRUSTSTORELOC",
-      "ssl.client.truststore.password": "TRUSTSTOREPASS",
-      "ssl.client.truststore.type": "jks",
-      "ssl.client.keystore.location": "KEYSTORELOC",
-      "ssl.client.keystore.password": "KEYPASS"
+      "ssl.server.truststore.location": "TRUSTSTORELOC",
+      "ssl.server.truststore.password": "TRUSTSTOREPASS",
+      "ssl.server.truststore.type": "jks",
+      "ssl.server.keystore.location": "KEYSTORELOC",
+      "ssl.server.keystore.password": "KEYPASS"
     },
     "ams-ssl-client": {
       "ssl.client.truststore.location": "TRUSTSTORELOC",
@@ -260,12 +266,15 @@
     }
   },
   "ATLAS": {
-    "application-properties": {
-      "truststore.file": "TRUSTSTORELOC",
-      "keystore.file": "KEYSTORELOC",
-      "client.auth.enabled": "false",
-      "cert.stores.credential.provider.path": "jceks://file//home/atlas/test.jceks",
-      "atlas.enableTLS": "true"
+    "application-proprties" : {
+      "truststore.file" : "TRUSTSTORELOC",
+      "keystore.file" : "KEYSTORELOC",
+      "cert.stores.credential.provider.path" : "jceks://file//etc/pki/creds.jceks",
+      "atlas.enableTLS" : "true",
+      "atlas.rest.address" : "ATLASURL"
+    },
+    "atlas-env": {
+      "metadata_opts" : "-Dlog4j.configuration=atlas-log4j.xml -Djavax.net.ssl.trustStore=TRUSTSTORELOC -Djavax.net.ssl.trustStorePassword=\"TRUSTPASS\""
     },
     "ranger-atlas-security": {
       "ranger.plugin.atlas.policy.rest.url": "RANGERURL"

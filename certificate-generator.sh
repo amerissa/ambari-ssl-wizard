@@ -49,6 +49,13 @@ function generatetruststore {
   done
 }
 
+function updatecacerts {
+  cp /etc/alternatives/java_sdk/jre/lib/security/cacerts ./
+  for cert in `ls ca/`; do
+    keytool -importcert -noprompt -file ca/$cert -alias $cert -keystore cacerts -storepass changeit
+  done
+}
+
 function generatepems {
   for host in $hosts; do
     echo $host
@@ -57,21 +64,31 @@ function generatepems {
       -srcstorepass "$KEYPASS" -srckeypass "$KEYPASS" -destkeystore $shost.p12 \
       -deststoretype PKCS12 -srcalias gateway-identity -deststorepass "$KEYPASS" -destkeypass "$KEYPASS"
     openssl pkcs12 -in $shost.p12 -passin pass:$KEYPASS  -nokeys -out $shost.pem
-    openssl pkcs12 -in $shost.p12 -passin pass:$KEYPASS -nocerts -out $shost.key
-    #rm -f $shost.p12
+    openssl pkcs12 -in $shost.p12 -passin pass:$KEYPASS -passout pass:$KEYPASS -nocerts -out $shost.keytemp
+    openssl rsa -in $shost.keytemp -passin pass:$KEYPASS -out $shost.key
+    rm -f $shost.p12 $shost.keytemp
+    rm -f $shost.keytemp
   done
+}
+
+function atlas {
+  echo -e "\n###########\nCreating Atlas credential store. For the provider input jceks://file/$(pwd)creds.jceks. \n Use the same keystore and truststore passwords\n###########\n"
+  /usr/hdp/current/atlas-server/bin/cputils.py
 }
 
 function pushkeys {
   for host in $hosts; do
     if [ $host != "ranger.$domain" ]; then
-      ssh $host mkdir -p $KEYLOC\; chmod ugo+rx $KEYLOC
-      ssh $host mkdir -p $TRUSTLOC\; chmod ugo+rx $TRUSTLOC
-      rsync -arP $shost.jks $host:${KEYLOC}/server.jks
-      rsync -arP truststore.jks $host:${TRUSTLOC}/truststore.jks
-      rsync -arP $shost.cer $host:${KEYLOC}/server.pem
-      rsync -arP $shost.key $host:${KEYLOC}/server.key
-      rsync -arP ranger.jks $host:${KEYLOC}/ranger-plugin.jks
+      shost=`echo $host | cut -d . -f 1`
+      ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host mkdir -p $KEYLOC\; chmod ugo+rx $KEYLOC
+      ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host mkdir -p $TRUSTLOC\; chmod ugo+rx $TRUSTLOC
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP creds.jceks $host:/etc/pki/creds.jceks
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP $shost.jks $host:${KEYLOC}/server.jks
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP truststore.jks $host:${TRUSTLOC}/truststore.jks
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP $shost.cer $host:${KEYLOC}/server.pem
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP $shost.key $host:${KEYLOC}/server.key
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP ranger.jks $host:${KEYLOC}/ranger-plugin.jks
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP cacerts $host:/etc/alternatives/java_sdk/jre/lib/security/cacerts
     fi
   done
 }
@@ -169,6 +186,8 @@ case $1 in
     generatetruststore
     importcert
     generatepems
+    atlas
+    updatecacerts
     pushkeys
     ;;
   RemoteAuthorityGenerateCSR)
@@ -179,6 +198,8 @@ case $1 in
     importcert
     generatetruststore
     generatepems
+    atlas
+    updatecacerts
     pushkeys
     ;;
   *)
