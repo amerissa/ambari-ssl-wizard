@@ -348,6 +348,10 @@
       "xasecure.policymgr.clientssl.truststore": "TRUSTSTORELOC",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
     },
+    "ranger-ugsync-site" :{
+      "ranger.usersync.truststore.file" : "TRUSTSTORELOC",
+      "ranger.usersync.truststore.password" : "TRUSTSTOREPASS"
+    },
     "ranger-tagsync-policymgr-ssl": {
       "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
       "xasecure.policymgr.clientssl.keystore.password": "KEYPASS",
