@@ -193,6 +193,7 @@
       "ranger.plugin.kms.policy.rest.url": "RANGERURL"
     },
     "ranger-kms-site": {
+      "ranger.https.attrib.keystore.file": "KEYSTORELOC",
       "ranger.service.https.attrib.keystore.file": "KEYSTORELOC",
       "ranger.service.https.attrib.client.auth": "want",
       "ranger.service.https.attrib.keystore.keyalias": "gateway-identity",
@@ -334,6 +335,7 @@
     },
     "ranger-admin-site": {
       "ranger.https.attrib.keystore.file": "KEYSTORELOC",
+      "ranger.service.https.attrib.keystore.file": "KEYSTORELOC",
       "ranger.service.https.attrib.keystore.keyalias": "gateway-identity",
       "ranger.service.https.attrib.keystore.pass": "KEYPASS",
       "ranger.service.https.attrib.ssl.enabled": "true",
