@@ -5,8 +5,7 @@
       "hadoop.ssl.hostname.verifier": "DEFAULT",
       "hadoop.ssl.keystores.factory.class": "org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory",
       "hadoop.ssl.server.conf": "ssl-server.xml",
-      "hadoop.ssl.client.conf": "ssl-client.xml",
-      "hadoop.security.key.provider.path" : "KMSURL"
+      "hadoop.ssl.client.conf": "ssl-client.xml"
     },
     "ssl-server": {
       "ssl.server.truststore.location": "TRUSTSTORELOC",
@@ -21,16 +20,15 @@
       "ssl.client.truststore.location": "TRUSTSTORELOC",
       "ssl.client.truststore.password": "TRUSTSTOREPASS",
       "ssl.client.truststore.type": "jks",
-      "ssl.server.keystore.location": "KEYSTORELOC",
-      "ssl.server.keystore.password": "KEYPASS",
-      "ssl.server.keystore.keypassword": "KEYPASS",
-      "ssl.server.keystore.type": "jks"
+      "ssl.client.keystore.location": "KEYSTORELOC",
+      "ssl.client.keystore.password": "KEYPASS",
+      "ssl.client.keystore.keypassword": "KEYPASS",
+      "ssl.client.keystore.type": "jks"
     },
     "hdfs-site": {
       "dfs.http.policy": "HTTPS_ONLY",
       "dfs.client.https.need-auth": "false",
       "dfs.https.enable": "true",
-      "dfs.encryption.key.provider.uri" : "KMSURL"
     },
     "ranger-hdfs-policymgr-ssl": {
       "xasecure.policymgr.clientssl.keystore": "KEYSTORERANGER",
@@ -189,6 +187,12 @@
       "ranger.service.http.enabled": "false",
       "xasecure.policymgr.clientssl.truststore.password": "TRUSTSTOREPASS"
     },
+    "hdfs-site" : {
+      "dfs.encryption.key.provider.uri" : "KMSURL"
+    },
+    "core-site" : {
+      "hadoop.security.key.provider.path" : "KMSURL"
+    },
     "ranger-kms-security": {
       "ranger.plugin.kms.policy.rest.url": "RANGERURL"
     },
@@ -242,14 +246,14 @@
     }
   },
   "AMBARI_INFRA": {
-    "infra_solr_env": {
+    "infra-solr-env": {
       "infra_solr_ssl_enabled": "true",
       "infra_solr_truststore_location": "TRUSTSTORELOC",
       "infra_solr_truststore_type": "jks",
       "infra_solr_truststore_password": "TRUSTSTOREPASS",
       "infra_solr_keystore_location": "KEYSTORELOC",
       "infra_solr_keystore_type": "jks",
-      "infra_solr_keystre_password": "KEYPASS"
+      "infra_solr_keystore_password": "KEYPASS"
     }
   },
   "AMBARI_METRICS": {

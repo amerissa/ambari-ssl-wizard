@@ -72,7 +72,7 @@ function generatepems {
 }
 
 function atlas {
-  echo -e "\n###########\nCreating Atlas credential store. For the provider input jceks://file/$(pwd)creds.jceks. \n Use the same keystore and truststore passwords\n###########\n"
+  echo -e "\n###########\nCreating Atlas credential store. For the provider input jceks://file$(pwd)creds.jceks. \n Use the same keystore and truststore passwords\n###########\n"
   /usr/hdp/current/atlas-server/bin/cputils.py
 }
 

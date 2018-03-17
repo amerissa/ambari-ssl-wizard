@@ -33,9 +33,22 @@ class ambariProps(object):
     def get(self, config, property):
         command = '%s -c %s -a %s' % (self.command, config, 'get')
         data = os.popen(command + '| grep -v "###"').read()
-        props = json.loads(data)
-        result = props["properties"][property]
-        return(result)
+        try:
+            props = json.loads(data)
+        except:
+            final='http://localhost:8080'
+        try:
+            result = props["properties"][property]
+        except:
+            final='http://localhost:8080'
+        try:
+            final
+        except:
+            final = None
+        if final is None:
+            return(result)
+        else:
+            return(final)
     def set(self, config, property, value):
         command = "%s -c %s -a %s -k %s -v '%s'" % (self.command, config, 'set', property, value)
         result = os.popen(command).read()
@@ -104,7 +117,7 @@ def main():
     "TIMELINEURL" : ambari.get("yarn-site", "yarn.timeline-service.webapp.address").split(':')[0] + ':8190',
     "HISTORYURL" : replaceurl('http://' + ambari.get("mapred-site", "mapreduce.jobhistory.webapp.address"), 19889),
     "KMSURL" : str(ambari.get("core-site", "hadoop.security.key.provider.path").replace(':9292', ':9393')).replace('//http@' , '//https@'),
-    "ATLASURL" : replaceurl("application-properties", "atlasatlas.rest.address" ), 21443)
+    "ATLASURL" : replaceurl(ambari.get("application-properties", "atlas.rest.address" ), 21443)
     }
     for service in installedservices:
         if service in definitions.keys():
