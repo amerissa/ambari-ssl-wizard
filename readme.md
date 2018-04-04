@@ -16,15 +16,12 @@ It will also update java's CA store
 
 
 ### Wizard:
+It has to be executed on the Ambari Server as it requires Ambari wrappers to push out the configs
 Options:
-  -h, --help            show this help message and exit
-  -S PROTOCOL, --protocol=PROTOCOL
-                        default is http, set to https if required
-  -P PORT, --port=PORT  Set Ambari Protocol
-  -u USERNAME, --username=USERNAME
-                        Ambari Username
-  -p PASSWORD, --password=PASSWORD
-                        Ambari Password
-  -H HOST, --host=HOST  Ambari Host
-  -C CONFIGS, --configfile=CONFIGS
-                        Config file containing key and truststore information
+-  -h, --help                            show this help message and exit
+-  -S PROTOCOL, --protocol=PROTOCOL      default is http, set to https if required
+-  -P PORT, --port=PORT                  Set Ambari Protocol (HTTP or HTTPS)
+-  -u USERNAME, --username=USERNAME      Ambari Username                    
+-  -p PASSWORD, --password=PASSWORD      Ambari Password                      
+-  -H HOST, --host=HOST                  Ambari Host
+-  -C CONFIGS, --configfile=CONFIGS      Config file containing key and truststore information
