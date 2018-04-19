@@ -26,3 +26,6 @@ It has to be executed on the Ambari Server as it requires Ambari wrappers to pus
 -  -p PASSWORD, --password=PASSWORD      Ambari Password                      
 -  -H HOST, --host=HOST                  Ambari Host
 -  -C CONFIGS, --configfile=CONFIGS      Config file containing key and truststore information
+
+### For Cloudbreak Deployments:
+Use the instructions in the cloudbreak folder
