@@ -50,7 +50,7 @@ function generatetruststore {
 }
 
 function updatecacerts {
-  cp /etc/alternatives/java_sdk/jre/lib/security/cacerts ./
+  cp $java_home/jre/lib/security/cacerts ./
   for cert in `ls ca/`; do
     keytool -importcert -noprompt -file ca/$cert -alias $cert -keystore cacerts -storepass changeit
   done
@@ -88,7 +88,7 @@ function pushkeys {
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP $shost.cer $host:${KEYLOC}/server.pem
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP $shost.key $host:${KEYLOC}/server.key
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP ranger.jks $host:${KEYLOC}/ranger-plugin.jks
-      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP cacerts $host:/etc/alternatives/java_sdk/jre/lib/security/cacerts
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP cacerts $host:$java_home/jre/lib/security/cacerts
     fi
   done
 }
@@ -176,6 +176,8 @@ echo ranger.$domain >> $hostsfile
 hosts=`cat $hostsfile`
 
 mkdir -p ca
+
+export java_home=`grep "java.home=" /etc/ambari-server/conf/ambari.properties | cut -d = -f 2`
 
 case $1 in
   LocalAuthority)

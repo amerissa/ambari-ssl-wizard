@@ -113,6 +113,7 @@ def main():
     updater = propertiesupdater(definitions)
     Config = ConfigParser.ConfigParser()
     Config.read(options.configs)
+    os.popen('PYTHONHTTPSVERIFY=0')
     global changeprops
     changeprops = {
         "KEYSTORELOC": Config.get("Configs", "KeyStoreLocation") + '/server.jks',
