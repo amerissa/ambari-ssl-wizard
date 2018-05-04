@@ -4,7 +4,7 @@ function generatekeys {
   for host in $hosts; do
     echo $host
     shost=`echo $host | cut -d . -f 1`
-    keytool -genkey -noprompt -alias gateway-identity -keyalg RSA -dname "CN=$host, OU=$OU, O=$O, L=$L, S=$S, C=$C" -keystore $shost.jks -storepass "$KEYPASS"  -keypass "$KEYPASS"
+    $java_home/bin/keytool -genkey -noprompt -alias gateway-identity -keyalg RSA -dname "CN=$host, OU=$OU, O=$O, L=$L, S=$S, C=$C" -keystore $shost.jks -storepass "$KEYPASS"  -keypass "$KEYPASS"
   done
 }
 
@@ -12,7 +12,7 @@ function generatecsr {
   for host in $hosts; do
     echo $host
     shost=`echo $host | cut -d . -f 1`
-    keytool -certreq -noprompt -alias gateway-identity -keyalg RSA -keystore $shost.jks -storepass "$KEYPASS"  -keypass "$KEYPASS" > $shost.csr
+    $java_home/bin/keytool -certreq -noprompt -alias gateway-identity -keyalg RSA -keystore $shost.jks -storepass "$KEYPASS"  -keypass "$KEYPASS" > $shost.csr
   done
 }
 
@@ -20,9 +20,9 @@ function importcert {
   for host in $hosts; do
     shost=`echo $host |cut -d . -f 1`
     for cert in `ls ca/`; do
-      keytool -importcert -noprompt -file ca/$cert -alias $cert  -keystore $shost.jks -storepass "$KEYPASS"
+      $java_home/bin/keytool -importcert -noprompt -file ca/$cert -alias $cert  -keystore $shost.jks -storepass "$KEYPASS"
     done
-    keytool -importcert -noprompt -alias gateway-identity -file $shost.cer -keystore $shost.jks -storepass "$KEYPASS"
+    $java_home/bin/keytool -importcert -noprompt -alias gateway-identity -file $shost.cer -keystore $shost.jks -storepass "$KEYPASS"
   done
 
 }
@@ -45,14 +45,14 @@ function generateca {
 
 function generatetruststore {
   for cert in `ls ca/`; do
-    keytool -importcert -noprompt -file ca/$cert -alias $cert -keystore truststore.jks -storepass "$TRUSTPASS"
+    $java_home/bin/keytool -importcert -noprompt -file ca/$cert -alias $cert -keystore truststore.jks -storepass "$TRUSTPASS"
   done
 }
 
 function updatecacerts {
   cp $java_home/jre/lib/security/cacerts ./
   for cert in `ls ca/`; do
-    keytool -importcert -noprompt -file ca/$cert -alias $cert -keystore cacerts -storepass changeit
+    $java_home/bin/keytool -importcert -noprompt -file ca/$cert -alias $cert -keystore cacerts -storepass changeit
   done
 }
 
@@ -60,7 +60,7 @@ function generatepems {
   for host in $hosts; do
     echo $host
     shost=`echo $host | cut -d . -f 1`
-    keytool -importkeystore -srckeystore $shost.jks \
+    $java_home/bin/keytool -importkeystore -srckeystore $shost.jks \
       -srcstorepass "$KEYPASS" -srckeypass "$KEYPASS" -destkeystore $shost.p12 \
       -deststoretype PKCS12 -srcalias gateway-identity -deststorepass "$KEYPASS" -destkeypass "$KEYPASS"
     openssl pkcs12 -in $shost.p12 -passin pass:$KEYPASS  -nokeys -out $shost.pem
@@ -72,23 +72,26 @@ function generatepems {
 }
 
 function atlas {
-  echo -e "\n###########\nCreating Atlas credential store. For the provider input jceks://file$(pwd)creds.jceks. \n Use the same keystore and truststore passwords\n###########\n"
-  /usr/hdp/current/atlas-server/bin/cputils.py
+  hadoop credential keystore.password -provider jceks://file$(pwd)/creds.jceks -value "$KEYPASS"
+  hadoop credential password -provider jceks://file$(pwd)/creds.jceks -value "$KEYPASS"
+  hadoop credential truststore.password -provider jceks://file$(pwd)/creds.jceks -value "$TRUSTPASS"
 }
 
 function pushkeys {
   for host in $hosts; do
     if [ $host != "ranger.$domain" ]; then
       shost=`echo $host | cut -d . -f 1`
-      ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host mkdir -p $KEYLOC\; chmod ugo+rx $KEYLOC
-      ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host mkdir -p $TRUSTLOC\; chmod ugo+rx $TRUSTLOC
-      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP creds.jceks $host:/etc/pki/creds.jceks
+      ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host sudo mkdir -p $KEYLOC\; sudo chmod ugo+rx $KEYLOC
+      ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host sudo mkdir -p $TRUSTLOC\; sudo chmod ugo+rx $TRUSTLOC
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP creds.jceks $host:/tmp/
+      ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host sudo cp /tmp/creds.jceks /etc/pki/creds.jceks
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP $shost.jks $host:${KEYLOC}/server.jks
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP truststore.jks $host:${TRUSTLOC}/truststore.jks
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP $shost.cer $host:${KEYLOC}/server.pem
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP $shost.key $host:${KEYLOC}/server.key
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP ranger.jks $host:${KEYLOC}/ranger-plugin.jks
-      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP cacerts $host:$java_home/jre/lib/security/cacerts
+      rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP cacerts $host:/tmp/
+      ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host sudo cp /tmp/cacerts $java_home/jre/lib/security/cacerts
     fi
   done
 }
