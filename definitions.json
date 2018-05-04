@@ -141,7 +141,13 @@
       "nifi.security.identity.mapping.value.dn": "$1"
     },
     "ranger-nifi-plugin-properties": {
-      "common.name.for.certificate": "RANGERCOMMONNAME"
+      "common.name.for.certificate": "RANGERCOMMONNAME",
+      "nifi.ssl.truststoreType": "JKS",
+      "nifi.ssl.keystoreType": "JKS",
+      "nifi.ssl.keystore": "KEYSTORERANGER",
+      "nifi.ssl.truststore": "TRUSTSTORELOC",
+      "nifi.ssl.keystorePassword": "KEYPASS",
+      "nifi.ssl.truststorePassword": "TRUSTSTOREPASS"
     }
   },
   "STORM": {
