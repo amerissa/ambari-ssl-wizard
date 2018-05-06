@@ -128,7 +128,7 @@ if [ -z "$O" ]; then
 fi
 
 L=`cat $config | grep City | cut -d "=" -f 2 `
-if [ -z $L ]; then
+if [ -z "$L" ]; then
   echo City is not specified
   exit 1
 fi
@@ -180,7 +180,7 @@ hosts=`cat $hostsfile`
 
 mkdir -p ca
 
-export java_home=`grep "java.home=" /etc/ambari-server/conf/ambari.properties | cut -d = -f 2`
+export java_home=`grep "java.home=" /etc/ambari-server/conf/ambari.properties | cut -d = -f 2 |head -1`
 
 case $1 in
   LocalAuthority)
