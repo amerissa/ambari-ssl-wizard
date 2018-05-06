@@ -180,7 +180,7 @@ hosts=`cat $hostsfile`
 
 mkdir -p ca
 
-export java_home=`grep "java.home=" /etc/ambari-server/conf/ambari.properties | cut -d = -f 2`
+export java_home=`grep "java.home=" /etc/ambari-server/conf/ambari.properties | cut -d = -f 2 |head -1`
 
 case $1 in
   LocalAuthority)
