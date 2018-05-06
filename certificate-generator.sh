@@ -128,7 +128,7 @@ if [ -z "$O" ]; then
 fi
 
 L=`cat $config | grep City | cut -d "=" -f 2 `
-if [ -z $L ]; then
+if [ -z "$L" ]; then
   echo City is not specified
   exit 1
 fi
