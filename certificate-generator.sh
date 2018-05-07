@@ -146,13 +146,13 @@ if [ -z $C ]; then
 fi
 
 KEYPASS=`cat $config | grep KeyStorePassword | cut -d "=" -f 2`
-if [ -z $KEYPASS ]; then
+if [ -z ${KEYPASS} ]; then
   echo KeyStorePassword is not specified
   exit 1
 fi
 
 TRUSTPASS=`cat $config | grep TrustStorePassword | cut -d "=" -f 2`
-if [ -z $TRUSTPASS ]; then
+if [ -z ${TRUSTPASS} ]; then
   echo TrustStorePassword is not specified
   exit 1
 fi
