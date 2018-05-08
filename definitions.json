@@ -27,6 +27,7 @@
     },
     "hdfs-site": {
       "dfs.http.policy": "HTTPS_ONLY",
+      "dfs.namenode.secondary.https-address" : "0.0.0.0:50091",
       "dfs.client.https.need-auth": "false",
       "dfs.https.enable": "true"
     },
@@ -231,6 +232,11 @@
     },
     "ranger-hbase-plugin-properties": {
       "common.name.for.certificate": "RANGERCOMMONNAME"
+    }
+  },
+  "TEZ" : {
+    "tez-site" : {
+      "tez.tez-ui.history-url.base" : "TEZURL/#/main/view/TEZ/tez_cluster_instance"
     }
   },
   "HIVE": {

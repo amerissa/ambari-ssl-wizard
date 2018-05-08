@@ -104,8 +104,11 @@ def main():
     username = options.username
     password = options.password
     port = options.port
-    protocol = options.protocol
+    protocol = options.protocol.lower()
     host = options.host
+    if protocol not in ["http", "https"]:
+        print("Protocol is not valid, use http or https")
+        sys.exit(1)
     clustername = ambariREST(protocol, host, port, username, password, "api/v1/clusters")["items"][0]["Clusters"]["cluster_name"]
     installedservices = [line["ServiceInfo"]["service_name"] for line in ambariREST(protocol, host, port, username, password, "api/v1/clusters/" + clustername + "/services")["items"]]
     definitions = loaddefinitions()
@@ -128,6 +131,10 @@ def main():
         "KMSURL": str(ambari.get("core-site", "hadoop.security.key.provider.path").replace(':9292', ':9393')).replace('//http@', '//https@'),
         "ATLASURL": replaceurl(ambari.get("application-properties", "atlas.rest.address"), 21443)
     }
+    if protocol is "https":
+        changeprops.update({"TEZURL": replaceurl(ambari.get("tez-site", "tez.tez-ui.history-url.base"), port)))
+    else:
+        changeprops.update({"TEZURL": ambari.get("tez-site", "tez.tez-ui.history-url.base")))
     for service in installedservices:
         if service in definitions.keys():
             updater.service(service)
