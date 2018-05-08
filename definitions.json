@@ -48,6 +48,7 @@
       "yarn.http.policy": "HTTPS_ONLY",
       "yarn.timeline-service.webapp.https.address": "TIMELINEURL",
       "yarn.log.server.url": "HISTORYURL/jobhistory/logs",
+      "yarn.log.server..web-service.url": "HISTORYURL/ws/v1/applicationhistory",
       "yarn.nodemanager.webapp.https.address": "0.0.0.0:8042"
     },
     "ranger-yarn-policymgr-ssl": {
