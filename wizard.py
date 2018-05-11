@@ -132,9 +132,9 @@ def main():
         "ATLASURL": replaceurl(ambari.get("application-properties", "atlas.rest.address"), 21443)
     }
     if protocol is "https":
-        changeprops.update({"TEZURL": replaceurl(ambari.get("tez-site", "tez.tez-ui.history-url.base"), port)))
+        changeprops.update({"TEZURL": replaceurl(ambari.get("tez-site", "tez.tez-ui.history-url.base"), port)})
     else:
-        changeprops.update({"TEZURL": ambari.get("tez-site", "tez.tez-ui.history-url.base")))
+        changeprops.update({"TEZURL": ambari.get("tez-site", "tez.tez-ui.history-url.base")})
     for service in installedservices:
         if service in definitions.keys():
             updater.service(service)
