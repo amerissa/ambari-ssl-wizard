@@ -53,9 +53,7 @@ function generatepems {
 
 function pushkeys {
   mkdir -p $KEYLOC
-  chmod ugo+rx $KEYLOC
   mkdir -p $TRUSTLOC
-  chmod ugo+rx $TRUSTLOC
   rsync -arP /root/ambari-ssl-wizard/atlas.creds /etc/pki/creds.jceks
   rsync -arP /root/ambari-ssl-wizard/$shost.jks ${KEYLOC}/server.jks
   rsync -arP /root/ambari-ssl-wizard/truststore.jks ${TRUSTLOC}/truststore.jks
@@ -63,6 +61,8 @@ function pushkeys {
   rsync -arP /root/ambari-ssl-wizard/$shost.key ${KEYLOC}/server.key
   rsync -arP /root/ambari-ssl-wizard/ranger.jks ${KEYLOC}/ranger-plugin.jks
   rsync -arP /root/ambari-ssl-wizard/cacerts /etc/alternatives/java_sdk/jre/lib/security/cacerts
+  chmod ugo+rx $TRUSTLOC -R
+  chmod ugo+rx $KEYLOC -R
 }
 
 if [ -z $1 ]; then
