@@ -12,6 +12,7 @@ hostname -f  > hosts
 ./certificate-generator.sh LocalAuthority configs
 
 if yum list installed | grep ambari-server; then
-ambari-server setup -s -j /etc/alternatives/java_sdk
-ambari-server setup-security --security-option=setup-truststore --truststore-reconfigure --truststore-type=jks --truststore-path=/etc/security/pki/truststore.jks --truststore-password=`cat configs | grep TrustStorePassword | cut -d "=" -f 2`
+  cp /etc/security/pki/truststore.jks /etc/security/pki/truststore-ambari.jks
+  ambari-server setup -s -j /etc/alternatives/java_sdk
+  ambari-server setup-security --security-option=setup-truststore --truststore-reconfigure --truststore-type=jks --truststore-path=/etc/security/pki/truststore-ambari.jks --truststore-password=`cat configs | grep TrustStorePassword | cut -d "=" -f 2`
 fi

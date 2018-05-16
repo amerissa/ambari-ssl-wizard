@@ -24,7 +24,8 @@ if [ -z ${TRUSTPASS} ]; then
   echo TrustStorePassword is not specified
   exit 1
 fi
+cp $TRUSTLOC/truststore.jks $TRUSTLOC/truststore-ambari.jks
 
-ambari-server setup-security --security-option=setup-https --truststore-type=jks --truststore-path=$TRUSTLOC/truststore.jks --truststore-password=${TRUSTPASS} --import-cert-path=$KEYLOC/server.pem --import-key-path=$KEYLOC/server.key --pem-password="" --api-ssl=true --api-ssl-port=8443
+ambari-server setup-security --security-option=setup-https --truststore-type=jks --truststore-path=$TRUSTLOC/truststore-ambari.jks --truststore-password=${TRUSTPASS} --import-cert-path=$KEYLOC/server.pem --import-key-path=$KEYLOC/server.key --pem-password="" --api-ssl=true --api-ssl-port=8443
 
-ambari-server setup-security --security-option=setup-truststore --truststore-type=jks --truststore-path=$TRUSTLOC/truststore.jks --truststore-password=${TRUSTPASS}
+ambari-server setup-security --security-option=setup-truststore --truststore-type=jks --truststore-path=$TRUSTLOC/truststore-ambari.jks --truststore-password=${TRUSTPASS}
