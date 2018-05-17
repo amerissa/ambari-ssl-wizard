@@ -292,7 +292,7 @@
       "atlas.rest.address": "ATLASURL"
     },
     "atlas-env": {
-      "metadata_opts": "-Dlog4j.configuration=atlas-log4j.xml -Djavax.net.ssl.trustStore=TRUSTSTORELOC -Djavax.net.ssl.trustStorePassword=\"TRUSTPASS\""
+      "metadata_opts": "-Dlog4j.configuration=atlas-log4j.xml -Djavax.net.ssl.trustStore=TRUSTSTORELOC -Djavax.net.ssl.trustStorePassword=\"TRUSTSTOREPASS\""
     },
     "ranger-atlas-security": {
       "ranger.plugin.atlas.policy.rest.url": "RANGERURL"
