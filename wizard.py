@@ -72,10 +72,10 @@ def ambariREST(protocol, host, port, username, password, endpoint):
 
 def ooziehost(protocol, host, port, username, password, clustername):
     try:
-        info = ambariREST(protocol, host, port, username, password, "api/v1/%s/services/OOZIE/components/OOZIE_SERVER" % (clustername))
+        info = ambariREST(protocol, host, port, username, password, "api/v1/clusters/%s/services/OOZIE/components/OOZIE_SERVER" % (clustername))
     except:
         return('localhost')
-    host = info['host_components'][0]['host_name']
+    host = info['host_components'][0]['HostRoles']['host_name']
     return(host)
 
 
