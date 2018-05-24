@@ -94,6 +94,7 @@ function pushkeys {
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP ranger.jks $host:${KEYLOC}/ranger-plugin.jks
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP cacerts $host:/tmp/
       ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host sudo cp /tmp/cacerts $java_home/jre/lib/security/cacerts
+      ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host sudo cp /tmp/cacerts /etc/pki/java/cacerts
       rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -arP ca-bundle.crt $host:/tmp/ca-bundle.crt
       ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $host sudo cp /tmp/ca-bundle.crt /etc/pki/tls/certs/ca-bundle.crt
     fi

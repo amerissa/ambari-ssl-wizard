@@ -70,6 +70,15 @@ def ambariREST(protocol, host, port, username, password, endpoint):
     return(json.loads(r.text))
 
 
+def ooziehost(protocol, host, port, username, password, clustername):
+    try:
+        info = ambariREST(protocol, host, port, username, password, "api/v1/%s/services/OOZIE/components/OOZIE_SERVER" % (clustername))
+    except:
+        return('localhost')
+    host = info['host_components'][0]['host_name']
+    return(host)
+
+
 def loaddefinitions():
     try:
         definitions = json.loads(open("./definitions.json").read())
@@ -129,12 +138,11 @@ def main():
         "TIMELINEURL": ambari.get("yarn-site", "yarn.timeline-service.webapp.address").split(':')[0] + ':8190',
         "HISTORYURL": replaceurl('http://' + ambari.get("mapred-site", "mapreduce.jobhistory.webapp.address"), 19889),
         "KMSURL": str(ambari.get("core-site", "hadoop.security.key.provider.path").replace(':9292', ':9393')).replace('//http@', '//https@'),
-        "ATLASURL": replaceurl(ambari.get("application-properties", "atlas.rest.address"), 21443)
+        "ATLASURL": replaceurl(ambari.get("application-properties", "atlas.rest.address"), 21443),
+        "OOZIEURL": "https://%s:11443/oozie" % (ooziehost(protocol, host, port, username, password, clustername)),
     }
     if protocol is "https":
         changeprops.update({"TEZURL": replaceurl(ambari.get("tez-site", "tez.tez-ui.history-url.base"), port)})
-    else:
-        changeprops.update({"TEZURL": ambari.get("tez-site", "tez.tez-ui.history-url.base")})
     for service in installedservices:
         if service in definitions.keys():
             updater.service(service)

@@ -61,6 +61,7 @@ function pushkeys {
   rsync -arP /root/ambari-ssl-wizard/$shost.key ${KEYLOC}/server.key
   rsync -arP /root/ambari-ssl-wizard/ranger.jks ${KEYLOC}/ranger-plugin.jks
   rsync -arP /root/ambari-ssl-wizard/cacerts /etc/alternatives/java_sdk/jre/lib/security/cacerts
+  rsync -arP /root/ambari-ssl-wizard/cacerts /etc/pki/java/cacerts
   chmod ugo+rx $TRUSTLOC -R
   chmod ugo+rx $KEYLOC -R
 }
