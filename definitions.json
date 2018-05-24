@@ -284,7 +284,7 @@
     }
   },
   "ATLAS": {
-    "application-proprties": {
+    "application-properties": {
       "truststore.file": "TRUSTSTORELOC",
       "keystore.file": "KEYSTORELOC",
       "cert.stores.credential.provider.path": "jceks://file//etc/pki/creds.jceks",
