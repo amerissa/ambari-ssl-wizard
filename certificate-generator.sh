@@ -74,9 +74,9 @@ function generatepems {
 }
 
 function atlas {
-  hadoop credential keystore.password -provider jceks://file$(pwd)/creds.jceks -value "$KEYPASS"
-  hadoop credential password -provider jceks://file$(pwd)/creds.jceks -value "$KEYPASS"
-  hadoop credential truststore.password -provider jceks://file$(pwd)/creds.jceks -value "$TRUSTPASS"
+  hadoop credential create keystore.password -provider jceks://file$(pwd)/creds.jceks -value "$KEYPASS"
+  hadoop credential create password -provider jceks://file$(pwd)/creds.jceks -value "$KEYPASS"
+  hadoop credential create truststore.password -provider jceks://file$(pwd)/creds.jceks -value "$TRUSTPASS"
 }
 
 function pushkeys {
