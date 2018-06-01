@@ -74,7 +74,6 @@
   "SPARK2": {
     "spark2-defaults": {
       "spark.ssl.enabled": "true",
-      "spark.ssl.enabledAlgorithms": "TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA",
       "spark.ssl.keyPassword": "KEYPASS",
       "spark.ssl.keyStore": "KEYSTORELOC",
       "spark.ssl.keyStorePassword": "KEYPASS",
@@ -87,7 +86,6 @@
   "SPARK": {
     "spark-defaults": {
       "spark.ssl.enabled": "true",
-      "spark.ssl.enabledAlgorithms": "TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA",
       "spark.ssl.keyPassword": "KEYPASS",
       "spark.ssl.keyStore": "KEYSTORELOC",
       "spark.ssl.keyStorePassword": "KEYPASS",
