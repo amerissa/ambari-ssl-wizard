@@ -136,7 +136,7 @@ def main():
         "RANGERCOMMONNAME": 'ranger.' + Config.get("Configs", "Domain"),
         "RANGERURL": replaceurl(ambari.get("admin-properties", "policymgr_external_url"), 6182),
         "TIMELINEURL": ambari.get("yarn-site", "yarn.timeline-service.webapp.address").split(':')[0] + ':8190',
-        "HISTORYURL": replaceurl('http://' + ambari.get("mapred-site", "mapreduce.jobhistory.webapp.address"), 19889),
+        "HISTORYURL": ambari.get("mapred-site", "mapreduce.jobhistory.webapp.address").split(':')[0] ':19889',
         "KMSURL": str(ambari.get("core-site", "hadoop.security.key.provider.path").replace(':9292', ':9393')).replace('//http@', '//https@'),
         "ATLASURL": replaceurl(ambari.get("application-properties", "atlas.rest.address"), 21443),
         "OOZIEURL": "https://%s:11443/oozie" % (ooziehost(protocol, host, port, username, password, clustername)),

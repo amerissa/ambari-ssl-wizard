@@ -48,8 +48,8 @@
     "yarn-site": {
       "yarn.http.policy": "HTTPS_ONLY",
       "yarn.timeline-service.webapp.https.address": "TIMELINEURL",
-      "yarn.log.server.url": "HISTORYURL/jobhistory/logs",
-      "yarn.log.server..web-service.url": "HISTORYURL/ws/v1/applicationhistory",
+      "yarn.log.server.url": "https://HISTORYURL/jobhistory/logs",
+      "yarn.log.server..web-service.url": "https://HISTORYURL/ws/v1/applicationhistory",
       "yarn.nodemanager.webapp.https.address": "0.0.0.0:8042"
     },
     "ranger-yarn-policymgr-ssl": {
@@ -68,7 +68,8 @@
   "MAPREDUCE2": {
     "mapred-site": {
       "mapreduce.jobhistory.http.policy": "HTTPS_ONLY",
-      "mapreduce.jobhistory.webapp.https.address": "HISTORYURL"
+      "mapreduce.jobhistory.webapp.https.address": "https://HISTORYURL",
+      "mapreduce.jobhistory.webapp.address": "HISTORYURL"
     }
   },
   "SPARK2": {
@@ -201,6 +202,9 @@
     },
     "ranger-kms-security": {
       "ranger.plugin.kms.policy.rest.url": "RANGERURL"
+    },
+    "kms-env": {
+      "kms_port": "9393"
     },
     "ranger-kms-site": {
       "ranger.https.attrib.keystore.file": "KEYSTORELOC",
